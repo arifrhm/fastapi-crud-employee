@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: employee-management-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: employee-management-api
+  template:
+    metadata:
+      labels:
+        app: employee-management-api
+    spec:
+      containers:
+      - name: employee-management-api
+        image: fastapi-crud-employee-web:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: POSTGRES_USER
+          valueFrom:
+            configMapKeyRef:
+              name: employee-management-config
+              key: POSTGRES_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: employee-management-config
+              key: POSTGRES_PASSWORD
+        - name: POSTGRES_DB
+          valueFrom:
+            configMapKeyRef:
+              name: employee-management-config
+              key: POSTGRES_DB
+        - name: POSTGRES_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: employee-management-config
+              key: POSTGRES_HOST
+        - name: POSTGRES_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: employee-management-config
+              key: POSTGRES_PORT
